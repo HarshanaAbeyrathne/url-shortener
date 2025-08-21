@@ -1,20 +1,15 @@
 import { Router } from 'express';
-import { createShortUrl, redirectByCode, getStats } from '../controllers/url.controller.js';
+// import { createShortUrl, redirectByCode, getStats } from '../controllers/url.controller.js';
+
+import { checkHealth, createShortUrl, redirectUrl, urlStats, checkShortUrl } from '../controllers/urlController.js';
 
 const router = Router();
 
 
-router.get('/health', (_req, res) => {
-    res.json({ ok: true, service: 'url-shortener-backend' });
-});
-
-
-
-// API endpoints
+router.get('/health', checkHealth);
 router.post('/shorten', createShortUrl);
-router.get('/stats/:code', getStats);
-
-// Public redirect endpoint (mounted at /r in server)
-router.get('/r/:code', redirectByCode);
+router.get('/r/:code', redirectUrl);
+router.get('/stats/:code', urlStats);
+router.get('/:code', checkShortUrl);
 
 export default router;
